@@ -42,7 +42,8 @@ class DatabasePrompt
   end
 
   def set(name, value)
-    @destructive_commands << [:set, name, @database[name]]
+    previous_value = @database[name]
+    @destructive_commands << [:set, name, previous_value]
     @database[name] = value
   end
 
@@ -51,7 +52,8 @@ class DatabasePrompt
   end
 
   def delete(name)
-    @destructive_commands << [:delete, name, @database.delete(name)]
+    previous_value = @database.delete(name)
+    @destructive_commands << [:delete, name, previous_value]
   end
 
   def count(value)
@@ -68,14 +70,10 @@ class DatabasePrompt
     transaction_commands = @destructive_commands.slice!(@transactions.pop..-1)
     transaction_commands.reverse_each do |command|
       case command
-      in :set, name, previous_value
-        if previous_value
-          @database[name] = previous_value
-        else
-          @database.delete(name)
-        end
-      in :delete, name, value
-        @database[name] = value
+      in :set | :delete, name, String => previous_value
+        @database[name] = previous_value
+      else
+        @database.delete(name)
       end
     end
   end
