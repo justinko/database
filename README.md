@@ -1,9 +1,13 @@
 # Database
 
-*Ruby 2.7 required*
+### Requirements
 
-Run `ruby database_prompt.rb`
+- Ruby 2.7+
 
-## TODO
+### Usage
 
-- Add Dockerfile
+Run `ruby database_prompt.rb` in the root directory.
+
+### TODO
+
+- [ ] Add Dockerfile
