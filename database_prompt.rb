@@ -42,8 +42,7 @@ class DatabasePrompt
   end
 
   def set(name, value)
-    previous_value = @database[name]
-    @destructive_commands << [:set, name, previous_value]
+    @destructive_commands << [:set, name, @database[name]]
     @database[name] = value
   end
 
@@ -52,8 +51,7 @@ class DatabasePrompt
   end
 
   def delete(name)
-    previous_value = @database.delete(name)
-    @destructive_commands << [:delete, name, previous_value]
+    @destructive_commands << [:delete, name, @database.delete(name)]
   end
 
   def count(value)
